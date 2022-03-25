@@ -3,14 +3,27 @@ import {connect} from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
 export function Quiz(props) {
-  const { fetchQuiz, quiz, selectedAnswer, selectAnswer } = props
+  const {
+    fetchQuiz,
+    quiz,
+    selectedAnswer,
+    selectAnswer,
+    postAnswer } = props
 
   useEffect(() => {
     fetchQuiz()
   },[])
 
+  const onSubmit = (evt) => {
+    evt.preventDefault()
+    postAnswer({
+      quiz_id: quiz.quiz_id,
+      answer_id: selectedAnswer
+    })
+  }
+
   const click = (id) => {
-    selectAnswer(id)
+    selectAnswer(quiz.answers[id].answer_id)
   }
 
   const selectCheck = (position) => {
@@ -31,20 +44,20 @@ export function Quiz(props) {
             <div id="quizAnswers">
               <div className={selectCheck(0) ? 'answer selected' : 'answer'}>
                 {quiz.answers[0].text}
-                <button onClick={() => click(quiz.answers[0].answer_id)} >
+                <button onClick={() => click(0)} >
                   {selectCheck(0) ? 'SELECTED' : 'select'}
                 </button>
               </div>
 
-              <div className="answer">
+              <div className={selectCheck(1) ? 'answer selected' : 'answer'}>
                 {quiz.answers[1].text}
-                <button onClick={() => click(quiz.answers[1].answer_id)}>
+                <button onClick={() => click(1)}>
                   {selectCheck(1) ? 'SELECTED' : 'select'}
                 </button>
               </div>
             </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
+            <button onClick={onSubmit} disabled={!selectedAnswer} id="submitAnswerBtn">Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
