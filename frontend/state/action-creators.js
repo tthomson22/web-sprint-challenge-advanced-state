@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { 
+  INPUT_CHANGE,
   MOVE_CLOCKWISE,
   MOVE_COUNTERCLOCKWISE, 
   RESET_FORM, 
@@ -29,7 +30,9 @@ export function setQuiz(data) {
   return {type: SET_QUIZ_INTO_STATE, payload: data}
 }
 
-export function inputChange() { }
+export function inputChange(change) {
+  return {type: INPUT_CHANGE, payload: change}
+}
 
 export function resetForm() {
   return {type: RESET_FORM}
