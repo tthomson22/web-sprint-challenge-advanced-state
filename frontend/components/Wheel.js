@@ -4,9 +4,6 @@ import reducer, { initialWheelState } from '../state/reducer'
 
 export default function Wheel() {
   const [state, dispatch] = useReducer(reducer, initialWheelState)
-  console.log(state)
-  // debugger
-
 
   const clockwiseClick = () => {
     dispatch(moveClockwise())
@@ -15,10 +12,9 @@ export default function Wheel() {
   const counterClockwiseClick = () => {
     dispatch(moveCounterClockwise())
   }
-  
 
   const activeCheck = (number) => {
-    if(state === number){
+    if (state === number) {
       return 'cog active'
     } else if (number === state.wheel) {
       return 'cog active'

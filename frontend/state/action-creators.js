@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE } from "./action-types"
+import { MOVE_CLOCKWISE, MOVE_COUNTERCLOCKWISE, SET_QUIZ_INTO_STATE, SET_SELECTED_ANSWER } from "./action-types"
 
 // ❗ You don't need to add extra action creators to achieve MVP
 export function moveClockwise() {
@@ -10,11 +10,15 @@ export function moveCounterClockwise() {
   return{type: MOVE_COUNTERCLOCKWISE}
 }
 
-export function selectAnswer() { }
+export function selectAnswer(id) {
+  return{type: SET_SELECTED_ANSWER, payload: id}
+}
 
 export function setMessage() { }
 
-export function setQuiz() { }
+export function setQuiz(data) {
+  return {type: SET_QUIZ_INTO_STATE, payload: data}
+}
 
 export function inputChange() { }
 
@@ -28,10 +32,11 @@ export function fetchQuiz() {
     // - Dispatch an action to send the obtained quiz to its state
     axios.get('http://localhost:9000/api/quiz/next')
       .then(res => {
-        dispatch({ type: SET_QUIZ_INTO_STATE, payload: res })
+        console.log(res.data)
+        dispatch(setQuiz(res.data))
       })
       .catch(err => {
-        console.log(err)
+        console.error(err)
       })
   }
 }
@@ -58,4 +63,3 @@ export function postQuiz() {
   }
 }
 // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
-fetchQuiz()
