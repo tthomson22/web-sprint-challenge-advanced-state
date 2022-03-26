@@ -26,8 +26,6 @@ function wheel(state = initialWheelState, action) {
     default:
       return state = 0
   }
-  
-  return state
 }
 
 const initialQuizState = null
