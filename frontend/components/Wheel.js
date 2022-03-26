@@ -1,22 +1,24 @@
-import React, { useReducer } from 'react'
-import { moveClockwise, moveCounterClockwise } from '../state/action-creators'
-import reducer, { initialWheelState } from '../state/reducer'
+import React from 'react'
+import { connect } from 'react-redux'
+import * as actionCreators from '../state/action-creators'
 
-export default function Wheel() {
-  const [state, dispatch] = useReducer(reducer, initialWheelState)
+export function Wheel(props) {
+  const {moveClockwise, moveCounterClockwise, wheel} = props
 
-  const clockwiseClick = () => {
-    dispatch(moveClockwise())
+  const clockwiseClick = (evt) => {
+    const {value} = evt.target
+    moveClockwise(value)
   }
 
-  const counterClockwiseClick = () => {
-    dispatch(moveCounterClockwise())
+  const counterClockwiseClick = (evt) => {
+    const {value} = evt.target
+    moveCounterClockwise(value)
   }
 
   const activeCheck = (number) => {
-    if (state === number) {
+    if (wheel === number) {
       return 'cog active'
-    } else if (number === state.wheel) {
+    } else if (number === wheel) {
       return 'cog active'
     }
     return 'cog'
@@ -33,9 +35,11 @@ export default function Wheel() {
         <div className={activeCheck(5)} style={{ "--i": 5 }}>{activeCheck(5) === 'cog active' ? 'B' : ''}</div>{/* --i is a custom CSS property, no need to touch that nor the style object */}
       </div>
       <div id="keypad">
-        <button onClick={() => counterClockwiseClick()} id="counterClockwiseBtn" >Counter clockwise</button>
-        <button onClick={() => clockwiseClick()} id="clockwiseBtn">Clockwise</button>
+        <button onClick={counterClockwiseClick} id="counterClockwiseBtn" >Counter clockwise</button>
+        <button onClick={clockwiseClick} id="clockwiseBtn">Clockwise</button>
       </div>
     </div>
   )
 }
+
+export default connect((state) => state, actionCreators)(Wheel)
